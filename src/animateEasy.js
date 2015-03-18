@@ -35,30 +35,16 @@ var ae = AE = function(window, undefined) {
 
     main.prototype = {
 
-        show:function(){
-            console.log(this.target)
+        show: function(){
+            return this.target;
         },
 
-        add:function(obj){
-            if(!obj[0]){ //需要自动获取第一帧
-                var _list = obj[Object.keys(obj)[0]].replace(/\s*/g,'').split(';').map(function(str){
-                    return str.replace(/:\w*/,'')
-                }),
-                    eleCss = window.getComputedStyle(this.target[0],null);
-                obj[0] = _list.map(function(str){
-                    return str + ':' + eleCss[str]
-                }).join(';');
-            }
+        add: function(obj){
 
-            var list = Object.keys(obj).filter(function(str){
-                    return !isNaN(parseInt(str,10))
-                }).sort(function(a,b){
-                    return a - b
-                }),
-                styleSheet = document.styleSheets[0],
-                lengList = list.length,
-                lengTarget = this.target.length,
-                id;
+            var target = this.target,
+                id ,final,
+                list ,styleSheet ,lengList ,lengTarget,
+                curve ,mark ,engine ,start;
 
             function objToStr(obj){
                 return Object.keys(obj).map(function(str){
@@ -66,7 +52,7 @@ var ae = AE = function(window, undefined) {
                 }).join(';');
             }
 
-            if(obj.id){ //获取标识符
+            if(obj.id){ //获取标识符与设置
                 id = obj.id;
             }
             else{
@@ -76,55 +62,100 @@ var ae = AE = function(window, undefined) {
                 id = 'animate' + ae.animateNum;
                 ae.animateNum++;
             }
-
-            for(var n = 0 ;n < lengList ;n++){ //对象关键帧参数转化成字符串
-                if(typeof obj[list[n]] === 'object'){
-                    obj[list[n]] = objToStr(obj[list[n]])
-                }
+            if(obj.final){
+                final = true;
             }
+
+            if(obj[0]){ //处理第一帧
+                obj[0] = objToStr(obj[0])
+            }
+            else{
+                var _list = obj[Object.keys(obj)[0]].replace(/\s*/g,'').split(';').map(function(str){
+                        return str.replace(/:\w*/,'')
+                    }),
+                    eleCss = window.getComputedStyle(this.target[0],null);
+                obj[0] = _list.map(function(str){
+                    return str + ':' + eleCss[str]
+                }).join(';');
+            }
+
+            list = Object.keys(obj).filter(function(str){ //关键帧列排序
+                return !isNaN(parseInt(str,10))
+            }).sort(function(a,b){
+                return a - b
+            });
+            styleSheet = document.styleSheets[0];
+            lengList = list.length;
+            lengTarget = target.length;
             for(var i = 0 ,j = i + 1; j < lengList; i++ ,j++){ //开始生成关键帧列表
-                var mark = 'aeAni-' + id + '-' + i,
-                    engine = '@-webkit-keyframes ' + mark + '{0%{' + obj[list[i]] + '}100%{' + obj[list[j]] +'}}',
-                    start = '.' + mark + '{-webkit-animation:' + mark + ' ' + (list[j] - list[i])/1000 + 's}';
+                if(typeof  obj[list[j]] === 'object'){
+                    curve = obj[list[j]].curve;
+                    obj[list[j]] = objToStr(obj[list[j]])
+                }
+                mark = 'aeAni-' + id + '-' + i;
+                engine = '@-webkit-keyframes ' + mark + '{0%{' + obj[list[i]] + '}100%{' + obj[list[j]] +'}}';
+                start = '.' + mark + '{-webkit-animation:' + mark + ' ' + (list[j] - list[i])/1000 + 's ';
+                if(curve){
+                    start += curve;
+                    if(final){
+                        start += ';-webkit-animation-fill-mode:forwards;}'
+                    }
+                    else{
+                        start += '}'
+                    }
+                }
+                else{
+                    if(final){
+                        start += ';-webkit-animation-fill-mode:forwards;}'
+                    }
+                    else{
+                        start += '}'
+                    }
+                }
                 styleSheet.insertRule(engine,0);
                 styleSheet.insertRule(start,0);
             }
+
             for(var m = 0;m < lengTarget;m++){ //绑定动画到对象
-                if(!this.target[m].dataset.animate){
-                    this.target[m].dataset.animate = mark
+                if(!target[m].dataset.animate){
+                    target[m].dataset.animate = mark;
                 }
                 else{
-                    this.target[m].dataset.animate = this.target[m].dataset.animate + ' ' + mark;
+                    target[m].dataset.animate = target[m].dataset.animate + ' ' + mark;
                 }
             }
 
             return this
         },
 
-        play: function(id){
+        play: function(id,fn){
+
+            fn = fn || function(){};
+
             var list = this.target,
-                leng = this.target.length;
+                leng = list.length,
+                _timer,
+                timer = 0;
+
+            function cssEvent(ele,type,fn){
+                ele.addEventListener('webkit' + type ,fn ,false);
+                ele.addEventListener(type.toLowerCase() ,fn ,false)
+            }
+            function cssEventDel(ele,type,fn){
+                ele.removeEventListener('webkit' + type ,fn ,false);
+                ele.removeEventListener(type.toLowerCase() ,fn ,false)
+            }
             function play(n){
                 var target = list[n],
                     idList = target.dataset.animate.split(' '),
                     animate ,leng ,className ,now;
-                function cssEvent(ele,type,fn){
-                    ele.addEventListener('webkit' + type ,fn ,false);
-                    ele.addEventListener(type.toLowerCase() ,fn ,false)
-                }
-                function cssEventDel(ele,type,fn){
-                    ele.removeEventListener('webkit' + type ,fn ,false);
-                    ele.removeEventListener(type.toLowerCase() ,fn ,false)
-                }
                 function nextKey(){
-                    console.log('now:' + now + ' ' + 'leng:' + leng);
                     if(now < leng){
                         now++;
                         target.classList.remove(className + (now - 1));
                         target.classList.add(className + now);
                     }
                     else{
-                        target.classList.remove(className + now);
                         cssEventDel(target,'AnimationEnd',nextKey);
                     }
                 }
@@ -140,14 +171,64 @@ var ae = AE = function(window, undefined) {
                 className = animate.replace(/\d+$/g,'');
                 now = 0;
                 target.classList.add(className + now);
-                cssEvent(target,'AnimationEnd',nextKey)
+                cssEvent(target,'AnimationEnd',nextKey);
+                return leng
             }
+            function check(){
+                if(timer == _timer) {
+                    fn();
+                    cssEventDel(list[0],'AnimationEnd',check);
+                }
+                timer += 1;
+            }
+
             for(var i = 0;i < leng;i++){
-                play(i);
+                _timer = play(i);
             }
+            cssEvent(list[0],'AnimationEnd',check);
+
+
+            return this
+        },
+
+        pause: function(){
+
+            var target = this.target,
+                leng = target.length;
+
+            for(var i = 0;i < leng;i++){
+                target[i].style.webkitAnimationPlayState = "paused"
+            }
+
+            return this
+
+        },
+
+        run: function(){
+
+            var target = this.target,
+                leng = target.length;
+
+            for(var i = 0;i < leng;i++){
+                target[i].style.webkitAnimationPlayState = "running"
+            }
+
+            return this
+
         }
+
     };
 
     return main
 
 }(window);
+
+
+
+/*
+动画播放次数animation-iteration-count
+动画逆向播放animation-direction
+动画曲线animation-timing-function
+
+动画暂停animation-play-state
+*/

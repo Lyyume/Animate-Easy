@@ -20,23 +20,33 @@
             width: 50px;
             background-color: blue;
         }
+        button{
+            position: relative;
+            margin-top: 200px;
+        }
+
     </style>
 </head>
 <body>
 <div id="test" class="test"></div>
 <div id="test2" class="test"></div>
+<button onclick="ae('.test').play()">.play()</button>
+<button onclick="ae('.test').pause()">.pause()</button>
+<button onclick="ae('.test').run()">.run()</button>
 </body>
 <script src="animateEasy.js"></script>
 <script>
-    var test = document.getElementById('test');
     ae('.test').add({
         'id':'test',
+        'final':true,
+        'loop':true,
         '1000':'left:100px;top:100px',
         '2000':{
             left:'200px',
-            top:'300px'
+            top:'300px',
+            curve:'cubic-bezier(1,1,.91,.59)'
         },
-        '4000':'left:0px;top:0px'
-    }).play();
+        '4000':'left:100px;top:100px'
+    })
 </script>
 </html>
