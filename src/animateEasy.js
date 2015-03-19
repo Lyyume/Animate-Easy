@@ -70,7 +70,7 @@ var ae = AE = function(window, undefined) {
                 obj[0] = objToStr(obj[0])
             }
             else{
-                var _list = obj[Object.keys(obj)[0]].replace(/\s*/g,'').split(';').map(function(str){
+                var _list = objToStr(obj[Object.keys(obj)[0]]).replace(/\s*/g,'').split(';').map(function(str){
                         return str.replace(/:\w*/,'')
                     }),
                     eleCss = window.getComputedStyle(this.target[0],null);
