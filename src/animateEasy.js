@@ -26,7 +26,7 @@ var ae = AE = function(window, undefined) {
             }
         }
         else{
-            //错误
+            throw 'Selector type error!'
         }
 
         return this
@@ -36,6 +36,7 @@ var ae = AE = function(window, undefined) {
     main.prototype = {
 
         show: function(){
+            console.log(this.target);
             return this.target;
         },
 
@@ -128,7 +129,7 @@ var ae = AE = function(window, undefined) {
             return this
         },
 
-        play: function(id,fn){
+        play: function(id,fn,fn2){
 
             fn = fn || function(){};
 
@@ -159,7 +160,7 @@ var ae = AE = function(window, undefined) {
                         cssEventDel(target,'AnimationEnd',nextKey);
                     }
                 }
-                if(!!id){ //获取播放的动画名
+                if(id){ //获取播放的动画名
                     animate = idList.filter(function(str){
                         return !!str.match('-' + id + '-')
                     })[0];
@@ -179,6 +180,7 @@ var ae = AE = function(window, undefined) {
                     fn();
                     cssEventDel(list[0],'AnimationEnd',check);
                 }
+                fn2();
                 timer += 1;
             }
 
@@ -215,6 +217,33 @@ var ae = AE = function(window, undefined) {
 
             return this
 
+        },
+
+        stop: function(id){
+
+            var target = this.target,
+                leng = target.length,
+                list ,listLeng;
+
+            if(id){
+                for(var m = 0; m < leng; m++){
+                    target[m].classList.remove(Array.prototype.slice.call(target[m].classList).filter(function(ele){
+                        return ele.match('aeAni-' + id + '-')
+                    })[0])
+                }
+            }
+            else{
+                for(var n = 0; n < leng ; n++){
+                    list = Array.prototype.slice.call(target[n].classList).filter(function(ele){
+                        return ele.match('aeAni-');
+                    });
+                    listLeng = list.length;
+                    for(var i = 0 ; i < listLeng; i++){
+                        target[n].classList.remove(list[i]);
+                    }
+                    target[n].style.webkitAnimationPlayState = ""
+                }
+            }
         }
 
     };
@@ -222,13 +251,3 @@ var ae = AE = function(window, undefined) {
     return main
 
 }(window);
-
-
-
-/*
-动画播放次数animation-iteration-count
-动画逆向播放animation-direction
-动画曲线animation-timing-function
-
-动画暂停animation-play-state
-*/

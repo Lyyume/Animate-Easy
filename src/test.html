@@ -30,13 +30,16 @@
 <body>
 <div id="test" class="test"></div>
 <div id="test2" class="test"></div>
-<button onclick="ae('.test').play()">.play()</button>
+<button onclick="ae('.test').show()">.show()</button>
+<button onclick="ae('.test').play('test',function(){console.log('over')},function(){console.log('!')})">.play()</button>
 <button onclick="ae('.test').pause()">.pause()</button>
 <button onclick="ae('.test').run()">.run()</button>
+<button onclick="ae('.test').stop()">.stop()</button>
 </body>
 <script src="animateEasy.js"></script>
 <script>
     ae('.test').add({
+
         'id':'test',
         'final':true,
         '1000':'left:100px;top:100px',
@@ -46,6 +49,7 @@
             curve:'cubic-bezier(1,1,.91,.59)'
         },
         '4000':'left:100px;top:100px'
+
     })
 </script>
 </html>
