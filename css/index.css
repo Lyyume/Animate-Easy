@@ -1,0 +1,268 @@
+@font-face {
+  font-family: helvetica-L;
+  unicode-range: U+0-2ff;
+  src: url(./fonts/helvetica-neue-ultra-light.ttf); }
+@font-face {
+  font-family: helvetica-L;
+  src: url(./fonts/FZYouXian.ttf); }
+@font-face {
+  font-family: Roboto-L;
+  src: url(./fonts/Roboto-Light.ttf); }
+@font-face {
+  font-family: FZYouXian;
+  src: url(./fonts/FZYouXian.ttf); }
+@font-face {
+  font-family: FZYouXian;
+  unicode-range: U+0-2ff;
+  src: url(./fonts/helvetica-neue-ultra-light.ttf); }
+@-webkit-keyframes mask {
+  0% {
+    margin-left: -200px; }
+  100% {
+    margin-left: -30px; } }
+@keyframes mask {
+  0% {
+    margin-left: -200px; }
+  100% {
+    margin-left: -30px; } }
+@-webkit-keyframes text-white {
+  0% {
+    color: #000000; }
+  100% {
+    color: #FFFFFF; } }
+@keyframes text-white {
+  0% {
+    color: #000000; }
+  100% {
+    color: #FFFFFF; } }
+.text-white {
+  -webkit-animation: text-white 1s;
+          animation: text-white 1s;
+  -webkit-animation-fill-mode: forwards;
+          animation-fill-mode: forwards; }
+
+@-webkit-keyframes img-show {
+  0% {
+    opacity: 0; }
+  100% {
+    opacity: 1; } }
+
+@keyframes img-show {
+  0% {
+    opacity: 0; }
+  100% {
+    opacity: 1; } }
+.img-show {
+  -webkit-animation: img-show 1s;
+          animation: img-show 1s;
+  -webkit-animation-fill-mode: forwards;
+          animation-fill-mode: forwards; }
+
+.stage {
+  height: 500px;
+  width: 1000px;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  margin-left: -500px;
+  margin-top: -250px; }
+
+.dancer-title {
+  position: absolute;
+  left: 0px;
+  top: 0px; }
+  .dancer-title .line-01 {
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    height: 1px;
+    width: 164px;
+    background-color: black; }
+  .dancer-title .title {
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    font-family: FZYouXian;
+    font-size: 36px;
+    letter-spacing: 2px; }
+    .dancer-title .title span {
+      font-size: 96px; }
+  .dancer-title .subtitle {
+    position: absolute;
+    font-family: FZYouXian;
+    font-size: 16px;
+    width: 240px;
+    top: 106px;
+    left: 170px; }
+  .dancer-title .button-download {
+    position: absolute;
+    left: 0px;
+    top: 150px;
+    width: 92px; }
+    .dancer-title .button-download img {
+      height: 16px;
+      width: 16px;
+      margin-right: 4px;
+      margin-top: 2px;
+      float: left; }
+    .dancer-title .button-download span {
+      float: left;
+      font-size: 16px;
+      font-family: Roboto-L;
+      color: #000000; }
+  .dancer-title .button-copyCDN {
+    position: absolute;
+    left: 150px;
+    top: 150px;
+    width: 116px; }
+    .dancer-title .button-copyCDN img {
+      height: 16px;
+      width: 16px;
+      margin-right: 4px;
+      margin-top: 2px;
+      float: left; }
+    .dancer-title .button-copyCDN span {
+      float: left;
+      font-size: 16px;
+      font-family: Roboto-L;
+      color: #000000; }
+
+.dancer-example {
+  position: absolute;
+  right: 0px;
+  bottom: 0px; }
+  .dancer-example .line-02 {
+    position: absolute;
+    right: 0px;
+    bottom: 0px;
+    height: 164px;
+    width: 1px;
+    background-color: black; }
+  .dancer-example .example-title {
+    position: absolute;
+    right: 0px;
+    bottom: 72px;
+    width: 305px;
+    font-family: FZYouXian;
+    font-size: 20px; }
+    .dancer-example .example-title span {
+      font-size: 96px; }
+  .dancer-example .example-subtitle {
+    position: absolute;
+    right: 220px;
+    bottom: 176px;
+    font-family: FZYouXian;
+    font-size: 16px;
+    width: 150px; }
+  .dancer-example .example {
+    cursor: pointer;
+    position: absolute;
+    white-space: pre;
+    font-size: 16px;
+    right: 16px;
+    bottom: 0px;
+    font-family: Roboto-L;
+    letter-spacing: 2px;
+    line-height: 20px;
+    background-color: rgba(0, 0, 0, 0.04);
+    padding: 8px 16px;
+    border-radius: 5px; }
+    .dancer-example .example .format-obj {
+      color: purple; }
+    .dancer-example .example .format-str {
+      color: green; }
+    .dancer-example .example .format-fn {
+      color: gray; }
+    .dancer-example .example .format-in {
+      margin-left: 36px; }
+  .dancer-example .button-api {
+    position: absolute;
+    right: 300px;
+    bottom: 0px;
+    width: 76px; }
+    .dancer-example .button-api img {
+      height: 16px;
+      width: 16px;
+      margin-right: 4px;
+      margin-top: 2px;
+      float: left; }
+    .dancer-example .button-api span {
+      float: left;
+      font-size: 16px;
+      font-family: Roboto-L; }
+  .dancer-example .button-github {
+    position: absolute;
+    right: 436px;
+    bottom: 0px;
+    width: 68px; }
+    .dancer-example .button-github img {
+      height: 16px;
+      width: 16px;
+      margin-right: 4px;
+      margin-top: 2px;
+      float: left; }
+    .dancer-example .button-github span {
+      float: left;
+      font-size: 16px;
+      font-family: Roboto-L; }
+
+.button {
+  padding: 8px 16px;
+  border: 1px solid rgba(0, 0, 0, 0.88);
+  cursor: pointer;
+  height: 19px;
+  overflow: hidden; }
+
+.background {
+  bottom: 0;
+  left: 0;
+  overflow: hidden;
+  -webkit-perspective: 70;
+          perspective: 70;
+  position: absolute;
+  right: 0;
+  top: 0;
+  z-index: -1000;
+  background: -webkit-radial-gradient(transparent 75%, rgba(0, 0, 0, 0.08) 100%);
+  background: radial-gradient(transparent 75%, rgba(0, 0, 0, 0.08) 100%); }
+
+.world {
+  height: 0px;
+  left: 50%;
+  margin-left: -0px;
+  margin-top: -0px;
+  position: absolute;
+  top: 50%;
+  -webkit-transform-style: preserve-3d;
+          transform-style: preserve-3d;
+  width: 0px;
+  opacity: 0.4; }
+
+.people {
+  margin-top: 0px;
+  height: 20px;
+  width: 20px; }
+
+.mask {
+  width: 170px;
+  height: 60px;
+  margin-left: -200px;
+  margin-top: -20px;
+  -webkit-transform: skew(-20deg);
+      -ms-transform: skew(-20deg);
+          transform: skew(-20deg);
+  background: #000000;
+  -webkit-animation: mask 1s;
+          animation: mask 1s;
+  -webkit-animation-fill-mode: forwards;
+          animation-fill-mode: forwards;
+  position: absolute;
+  z-index: -100; }
+
+.img-white {
+  position: absolute;
+  left: 16px;
+  opacity: 0; }
+
+a:visited {
+  color: #000000; }
