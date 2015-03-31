@@ -240,12 +240,30 @@ var ae = AE = function(window, undefined) {
                         return ele.match('aeAni-');
                     });
                     listLeng = list.length;
-                    for(var i = 0 ; i < listLeng; i++){
+                    for(var i = 0; i < listLeng; i++){
                         target[n].classList.remove(list[i]);
                     }
                     target[n].style.webkitAnimationPlayState = ""
                 }
             }
+        },
+
+        clear: function(){
+
+            var target = this.target,
+                leng = target.length,
+                classList ,classLeng;
+
+            for(var i = 0 ; i < leng ; i++){
+                classList = Array.prototype.slice.call(target[i].classList).filter(function(ele){
+                    return ele.match('aeAni-');
+                });
+                classLeng = classList.length;
+                for(var n = 0; n < classLeng; n++){
+                    target[i].classList.remove(classList[n]);
+                }
+            }
+
         }
 
     };
