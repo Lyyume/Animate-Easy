@@ -132,6 +132,7 @@ var ae = AE = function(window, undefined) {
         play: function(id,fn,fn2){
 
             fn = fn || function(){};
+            fn2 = fn2 || function(){};
 
             var list = this.target,
                 leng = list.length,
@@ -171,6 +172,7 @@ var ae = AE = function(window, undefined) {
                 leng = animate.match(/\d+$/g)[0];
                 className = animate.replace(/\d+$/g,'');
                 now = 0;
+                target.classList.remove(className + now);
                 target.classList.add(className + now);
                 cssEvent(target,'AnimationEnd',nextKey);
                 return leng
