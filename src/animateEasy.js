@@ -246,6 +246,9 @@ var ae = AE = function(window, undefined) {
                     target[n].style.webkitAnimationPlayState = ""
                 }
             }
+
+            return this
+
         },
 
         clear: function(){
@@ -263,6 +266,8 @@ var ae = AE = function(window, undefined) {
                     target[i].classList.remove(classList[n]);
                 }
             }
+
+            return this
 
         }
 
