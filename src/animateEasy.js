@@ -1,4 +1,4 @@
-var ae = AE = function(window, undefined) {
+ae = AE = function(window, undefined) {
 
     var main = function(selector) {
 
@@ -30,13 +30,13 @@ var ae = AE = function(window, undefined) {
         }
 
         return this
+
     };
 
 
     main.prototype = {
 
         show: function(){
-            console.log(this.target);
             return this.target;
         },
 
@@ -127,6 +127,77 @@ var ae = AE = function(window, undefined) {
             }
 
             return this
+
+        },
+
+        _add: function(obj){
+
+            var id ,final,
+                list ,styleSheet ,lengList,
+                curve ,mark ,engine ,start;
+
+            function objToStr(obj){
+                return Object.keys(obj).map(function(str){
+                    return str + ':' + obj[str];
+                }).join(';');
+            }
+
+            if(obj.id){
+                id = obj.id;
+            }
+            else{
+                throw 'Need id!'
+            }
+            if(obj.final){
+                final = true;
+            }
+
+            list = Object.keys(obj).filter(function(str){
+                return !isNaN(parseInt(str,10))
+            }).sort(function(a,b){
+                return a - b
+            });
+            styleSheet = document.styleSheets[0];
+            lengList = list.length;
+            for(var i = 0 ,j = i + 1; j < lengList; i++ ,j++){ //开始生成关键帧列表
+                if(typeof  obj[list[j]] === 'object'){
+                    curve = obj[list[j]].curve;
+                    obj[list[j]] = objToStr(obj[list[j]])
+                }
+                mark = 'aeAni-_' + id + '-' + i;
+                engine = '@-webkit-keyframes ' + mark + '{0%{' + obj[list[i]] + '}100%{' + obj[list[j]] +'}}';
+                start = '.' + mark + '{-webkit-animation:' + mark + ' ' + (list[j] - list[i])/1000 + 's ';
+                if(curve){
+                    start += curve;
+                    if(final){
+                        start += ';-webkit-animation-fill-mode:forwards;}'
+                    }
+                    else{
+                        start += '}'
+                    }
+                }
+                else{
+                    if(final){
+                        start += ';-webkit-animation-fill-mode:forwards;}'
+                    }
+                    else{
+                        start += '}'
+                    }
+                }
+                styleSheet.insertRule(engine,0);
+                styleSheet.insertRule(start,0);
+            }
+
+            if(!ae.list){
+                ae.list = {};
+                ae.list[id] = mark;
+            }
+            else{
+                ae.list[id] = mark;
+            }
+
+            return this
+
         },
 
         play: function(id,fn,fn2){
@@ -191,8 +262,71 @@ var ae = AE = function(window, undefined) {
             }
             cssEvent(list[0],'AnimationEnd',check);
 
+            return this
+
+        },
+
+        _play: function(id,fn,fn2){
+
+            fn = fn || function(){};
+            fn2 = fn2 || function(){};
+
+            var list = this.target,
+                leng = list.length,
+                _timer,
+                timer = 0;
+
+            function cssEvent(ele,type,fn){
+                ele.addEventListener('webkit' + type ,fn ,false);
+                ele.addEventListener(type.toLowerCase() ,fn ,false)
+            }
+            function cssEventDel(ele,type,fn){
+                ele.removeEventListener('webkit' + type ,fn ,false);
+                ele.removeEventListener(type.toLowerCase() ,fn ,false)
+            }
+            function play(n){
+                var target = list[n],
+                    animate ,leng ,className ,now;
+                function nextKey(){
+                    if(now < leng){
+                        now++;
+                        target.classList.remove(className + (now - 1));
+                        target.classList.add(className + now);
+                    }
+                    else{
+                        cssEventDel(target,'AnimationEnd',nextKey);
+                    }
+                }
+                if(id){ //获取播放的动画名
+                    animate = ae.list[id]
+                }
+                else{
+                    throw 'Need id!'
+                }
+                leng = animate.match(/\d+$/g)[0];
+                className = animate.replace(/\d+$/g,'');
+                now = 0;
+                target.classList.remove(className + now);
+                target.classList.add(className + now);
+                cssEvent(target,'AnimationEnd',nextKey);
+                return leng
+            }
+            function check(){
+                if(timer == _timer) {
+                    fn();
+                    cssEventDel(list[0],'AnimationEnd',check);
+                }
+                fn2();
+                timer += 1;
+            }
+
+            for(var i = 0;i < leng;i++){
+                _timer = play(i);
+            }
+            cssEvent(list[0],'AnimationEnd',check);
 
             return this
+
         },
 
         pause: function(){

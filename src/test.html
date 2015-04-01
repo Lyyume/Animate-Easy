@@ -36,13 +36,15 @@
 <button onclick="ae('.test').run()">.run()</button>
 <button onclick="ae('.test').stop()">.stop()</button>
 <button onclick="ae('.test').clear()">.clear()</button>
+<button onclick="ae('.test')._play('test')">._play()</button>
 </body>
 <script src="animateEasy.js"></script>
 <script>
-    ae('.test').add({
+    ae('.test')._add({
 
         'id':'test',
         'final':true,
+        '0':'left:0px;top:0px',
         '1000':'left:100px;top:100px',
         '2000':{
             left:'200px',
