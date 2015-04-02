@@ -67,8 +67,9 @@ ae = AE = function(window, undefined) {
                 final = true;
             }
 
+
             if(obj[0]){ //处理第一帧
-                obj[0] = objToStr(obj[0])
+                if(typeof obj[0] === 'object') obj[0] = objToStr(obj[0])
             }
             else{
                 var _list = objToStr(obj[Object.keys(obj)[0]]).replace(/\s*/g,'').split(';').map(function(str){
