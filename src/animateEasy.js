@@ -68,7 +68,7 @@ ae = AE = function(window, undefined) {
             }
 
 
-            if(obj[0]){ //处理第一帧
+            if(obj[0]){ //处理自动获取第一帧
                 if(typeof obj[0] === 'object') obj[0] = objToStr(obj[0])
             }
             else{
